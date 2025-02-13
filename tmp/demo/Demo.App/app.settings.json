@@ -1,7 +1,11 @@
 ﻿{
   "Openai": {
-    "ApiKey": "your-api-key-here",
-    "Model": "gpt-4",
-    "Temperature": 0.7
+    "Key": "provided via registry settings",
+    "Model": "gpt-4o-mini",
+    "Temperature": 0.7,
+    "Max": 300,
+    "Endpoints": {
+      "Completion": "https://api.openai.com/v1/chat/completions"
+    }
   }
 }

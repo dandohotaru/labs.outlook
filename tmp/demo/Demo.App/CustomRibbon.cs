@@ -19,12 +19,6 @@ namespace Demo.App
         private void CustomRibbon_Load(object sender, RibbonUIEventArgs e)
         {
             var settings = SettingsService.Instance;
-            var tempKey = settings.GetValue<string>("Openai:ApiKey");
-            Console.WriteLine($"Json Key: {tempKey}");
-
-            var apiKey = settings.GetValue<string>("OpenaiApiKey");
-            Console.WriteLine($"Reg Key: {apiKey}");
-
             var chatbot = new OpenaiChatService(settings);
             Composer = new ComposeAgent(chatbot);
         }

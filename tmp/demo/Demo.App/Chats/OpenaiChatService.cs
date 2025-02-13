@@ -20,15 +20,17 @@ namespace Demo.App.Chats
 
         private ISettingsService Settings { get; set; }
 
-        private const string APIURL = "https://api.openai.com/v1/chat/completions";
-
         public async Task<string> Send(string scope, string prompt)
         {
             try
             {
-                using var client = new HttpClient();
+                var endpoint = Settings.GetValue<string>("Openai:Endpoints:Completion");
+                var token = Settings.GetValue<string>("Openai:Key");
+                var model = Settings.GetValue<string>("Openai:Model");
+                var temperature = Settings.GetValue<double>("Openai:Temperature");
+                var max = Settings.GetValue<int>("Openai:Max");
 
-                var token = Settings.GetValue<string>("OpenaiApiKey");
+                using var client = new HttpClient();
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
 
                 var requestModel = new
@@ -46,9 +48,9 @@ namespace Demo.App.Chats
                             content = prompt
                         }
                     },
-                    model = "gpt-4o-mini",
-                    temperature = 0.7,
-                    max_completion_tokens = 300,
+                    model = model,
+                    temperature = temperature,
+                    max_completion_tokens = max,
                     top_p = 1,
                     frequency_penalty = 0,
                     presence_penalty = 0,
@@ -61,7 +63,7 @@ namespace Demo.App.Chats
                 var requestContent = JsonSerializer.Serialize(requestModel);
                 var request = new StringContent(requestContent, Encoding.UTF8, "application/json");
 
-                var response = await client.PostAsync(APIURL, request);
+                var response = await client.PostAsync(endpoint, request);
                 response.EnsureSuccessStatusCode();
 
                 var responseContent = await response.Content.ReadAsStringAsync();

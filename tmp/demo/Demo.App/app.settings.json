@@ -1,0 +1,7 @@
+﻿{
+  "Openai": {
+    "ApiKey": "your-api-key-here",
+    "Model": "gpt-4",
+    "Temperature": 0.7
+  }
+}

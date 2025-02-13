@@ -1,0 +1,90 @@
+﻿using Demo.App.Shared.Extensions;
+using Demo.App.Shared.Settings;
+using System;
+using System.Diagnostics;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+
+namespace Demo.App.Chats
+{
+    public class OpenaiChatService : IChatService
+    {
+        public OpenaiChatService(ISettingsService settings)
+        {
+            Settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
+        }
+
+        private ISettingsService Settings { get; set; }
+
+        private const string APIURL = "https://api.openai.com/v1/chat/completions";
+
+        public async Task<string> Send(string scope, string prompt)
+        {
+            try
+            {
+                using var client = new HttpClient();
+
+                var token = Settings.GetValue<string>("OpenaiApiKey");
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+
+                var requestModel = new
+                {
+                    messages = new[]
+                    {
+                        new
+                        {
+                            role = "system",
+                            content = scope
+                        },
+                        new
+                        {
+                            role = "user",
+                            content = prompt
+                        }
+                    },
+                    model = "gpt-4o-mini",
+                    temperature = 0.7,
+                    max_completion_tokens = 300,
+                    top_p = 1,
+                    frequency_penalty = 0,
+                    presence_penalty = 0,
+                    response_format = new
+                    {
+                        type = "text"
+                    },
+                };
+
+                var requestContent = JsonSerializer.Serialize(requestModel);
+                var request = new StringContent(requestContent, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync(APIURL, request);
+                response.EnsureSuccessStatusCode();
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                using var document = JsonDocument.Parse(responseContent);
+
+                return document.RootElement
+                    .GetProperty("choices")[0]
+                    .GetProperty("message")
+                    .GetProperty("content")
+                    .GetString();
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine($"Input: {prompt}");
+                Debug.WriteLine($"Error: {exception.ToMessage()}");
+
+                var message = new StringBuilder()
+                    .AppendLine("Error generating reply. ")
+                    .AppendLine(exception.ToMessage())
+                    .ToString();
+
+                return message;
+            }
+        }
+    }
+}

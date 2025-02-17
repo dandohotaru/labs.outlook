@@ -285,6 +285,12 @@
   <ItemGroup>
     <Compile Include="Agents\Revise\ReviseAgent.cs" />
     <Compile Include="Agents\Revise\ReviseResult.cs" />
+    <Compile Include="ComposeRibbon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ComposeRibbon.Designer.cs">
+      <DependentUpon>ComposeRibbon.cs</DependentUpon>
+    </Compile>
     <Compile Include="Shared\Models\DraftModel.cs" />
     <Compile Include="Shared\Models\EmailModel.cs" />
     <Compile Include="Agents\Compose\ComposeAgent.cs" />
@@ -301,6 +307,9 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <EmbeddedResource Include="ComposeRibbon.resx">
+      <DependentUpon>ComposeRibbon.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CustomRibbon.resx">
       <DependentUpon>CustomRibbon.cs</DependentUpon>
     </EmbeddedResource>

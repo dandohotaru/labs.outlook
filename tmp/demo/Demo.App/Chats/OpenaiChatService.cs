@@ -1,7 +1,9 @@
 ﻿using Demo.App.Shared.Extensions;
 using Demo.App.Shared.Settings;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -20,7 +22,7 @@ namespace Demo.App.Chats
 
         private ISettingsService Settings { get; set; }
 
-        public async Task<string> Send(string scope, string prompt)
+        public async Task<string> Send(IEnumerable<ChatMessage> messages)
         {
             try
             {
@@ -35,19 +37,13 @@ namespace Demo.App.Chats
 
                 var requestModel = new
                 {
-                    messages = new[]
-                    {
-                        new
+                    messages = messages
+                        .Select(p => new
                         {
-                            role = "system",
-                            content = scope
-                        },
-                        new
-                        {
-                            role = "user",
-                            content = prompt
-                        }
-                    },
+                            role = p.Role,
+                            content = p.Content
+                        })
+                        .ToArray(),
                     model = model,
                     temperature = temperature,
                     max_completion_tokens = max,
@@ -77,7 +73,6 @@ namespace Demo.App.Chats
             }
             catch (Exception exception)
             {
-                Debug.WriteLine($"Input: {prompt}");
                 Debug.WriteLine($"Error: {exception.ToMessage()}");
 
                 var message = new StringBuilder()

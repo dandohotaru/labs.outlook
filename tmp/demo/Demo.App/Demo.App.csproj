@@ -283,6 +283,8 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Agents\Revise\ReviseAgent.cs" />
+    <Compile Include="Agents\Revise\ReviseResult.cs" />
     <Compile Include="Shared\Models\DraftModel.cs" />
     <Compile Include="Shared\Models\EmailModel.cs" />
     <Compile Include="Agents\Compose\ComposeAgent.cs" />
@@ -315,7 +317,7 @@
     <None Include="app.secrets.ps1" />
     <None Include="app.settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
     <None Include="Demo.App_TemporaryKey.pfx" />
     <None Include="packages.config" />
@@ -347,9 +349,7 @@
     </Compile>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Agents\Revise\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

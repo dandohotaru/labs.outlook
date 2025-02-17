@@ -11,7 +11,7 @@ namespace Demo.App.Agents
 
         public IEnumerable<string> Recipients { get; set; }
 
-        public DateTime Sent { get; set; }
+        public DateTime? Sent { get; set; }
 
         public string Body { get; set; }
     }

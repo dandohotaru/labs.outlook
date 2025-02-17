@@ -23,7 +23,6 @@ namespace Demo.App.Agents.Compose
             var scopeBuilder = new StringBuilder();
             scopeBuilder.AppendLine("You are a professional email assistant. ");
             scopeBuilder.AppendLine("Generate a polite and concise email reply based on the given context.");
-            
             var scope = scopeBuilder.ToString();
             Debug.WriteLine("Scope: " + scope);
             
@@ -43,7 +42,19 @@ namespace Demo.App.Agents.Compose
             Debug.WriteLine("Prompt: " + prompt);
 
             // result
-            var result = await Service.Send(scope, prompt);
+            var result = await Service.Send(
+            [
+                new ChatMessage
+                {
+                    Role = "system",
+                    Content = scope
+                },
+                new ChatMessage
+                {
+                    Role = "user",
+                    Content = prompt
+                },
+            ]);
 
             return new ComposeResult
             {

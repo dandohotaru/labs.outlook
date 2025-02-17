@@ -4,6 +4,8 @@ namespace Demo.App.Agents
 {
     public class DraftModel
     {
+        public string Subject { get; set; }
+
         public string Sender { get; set; }
 
         public IEnumerable<string> Recipients { get; set; }

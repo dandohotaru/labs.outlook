@@ -16,7 +16,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 using Application = Microsoft.Office.Interop.Outlook.Application;
 
 namespace Demo.App
@@ -32,7 +31,7 @@ namespace Demo.App
 
         private ComposeAgent Composer { get; set; }
 
-        private ReviseAgent Reviser { get; set; }
+        private RefineAgent Refiner { get; set; }
 
         public string GetCustomUI(string ribbonID)
         {
@@ -46,7 +45,7 @@ namespace Demo.App
             var settings = SettingsService.Instance;
             var chatbot = new OpenaiChatService(settings);
             Composer = new ComposeAgent(chatbot);
-            Reviser = new ReviseAgent(chatbot);
+            Refiner = new RefineAgent(chatbot);
         }
 
         private static string GetResourceText(string resourceName)
@@ -109,23 +108,43 @@ namespace Demo.App
             return true;
         }
 
-        public void OnSummarize_Click(IRibbonControl control)
+        public async void OnSummarize_Click(IRibbonControl control)
         {
-            Application application = Globals.ThisAddIn.Application;
-            Explorer explorer = application.ActiveExplorer();
-            MailItem mail = explorer.Selection[1] as MailItem;
-
-            if (mail != null)
+            try
             {
-                string emailBody = mail.Body;
+                var application = Globals.ThisAddIn.Application;
+                MailItem email = null;
 
-                // Process with AI model
-                //string summary = CallAIService("summarize", emailBody);
+                // Get currently selected email
+                if (application.ActiveInspector() != null)
+                {
+                    email = application.ActiveInspector().CurrentItem as MailItem;
+                }
+                else if (application.ActiveExplorer().Selection.Count > 0)
+                {
+                    email = application.ActiveExplorer().Selection[1] as MailItem;
+                }
 
-                // Show result in a WPF Task Pane
-                //ShowTaskPane(summary);
+                if (email != null)
+                {
+                    var conversation = email.Conversation().Map1();
 
-                MessageBox.Show("summarize");
+                    // Call AI service for summarization
+                    //var result = await Summarizer.Summarize(conversation);
+                    var result = "this is a test";
+
+                    // Show the Task Pane and display the summary
+                    Globals.ThisAddIn.ShowSummary(result);
+                }
+                else
+                {
+                    MessageBox.Show("No email selected for summarization.");
+                }
+            }
+            catch (System.Exception exception)
+            {
+                Debug.WriteLine($"Error: {exception.Message}");
+                MessageBox.Show($"Error: {exception.Message}");
             }
         }
 
@@ -159,7 +178,7 @@ namespace Demo.App
                         .Conversation()
                         .Map1();
 
-                    var result = await Reviser.Revise(draft, conversation);
+                    var result = await Refiner.Revise(draft, conversation);
 
                     email.Body = result.Body;
                     email.Save();

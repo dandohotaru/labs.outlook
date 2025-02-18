@@ -6,6 +6,7 @@ namespace Demo.App
     public partial class ThisAddIn
     {
         private RibbonCustom ribbon;
+        private SummaryPaneHost summary;
 
         private void InternalStartup()
         {
@@ -23,6 +24,19 @@ namespace Demo.App
         {
             ribbon = new RibbonCustom();
             return ribbon;
+        }
+
+        public void ShowSummary(string content)
+        {
+            if (summary == null)
+                summary = new SummaryPaneHost(CustomTaskPanes);
+            summary.Show(content);
+        }
+
+        public void CloseSummary()
+        {
+            summary?.Close();
+            summary = null;
         }
     }
 }

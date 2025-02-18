@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Core;
+﻿using Demo.App.Shared.Controls;
+using Microsoft.Office.Core;
 using System.Diagnostics;
 
 namespace Demo.App
@@ -6,7 +7,7 @@ namespace Demo.App
     public partial class ThisAddIn
     {
         private RibbonCustom ribbon;
-        private SummaryPaneHost summary;
+        private PaneHost host;
 
         private void InternalStartup()
         {
@@ -26,17 +27,20 @@ namespace Demo.App
             return ribbon;
         }
 
-        public void ShowSummary(string content)
+        public void ShowSummary(string summary)
         {
-            if (summary == null)
-                summary = new SummaryPaneHost(CustomTaskPanes);
-            summary.Show(content);
+            var control = new SummaryPane();
+            control.UpdateSummary(summary);
+
+            if (host == null)
+                host = new PaneHost(CustomTaskPanes);
+            host.Show(control, 600);
         }
 
         public void CloseSummary()
         {
-            summary?.Close();
-            summary = null;
+            host?.Close();
+            host = null;
         }
     }
 }

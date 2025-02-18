@@ -7,16 +7,12 @@ using Demo.App.Shared.Settings;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Outlook;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
-using Application = Microsoft.Office.Interop.Outlook.Application;
 
 namespace Demo.App
 {

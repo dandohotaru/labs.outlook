@@ -291,6 +291,9 @@
     <Compile Include="Agents\Refine\RefineAgent.cs" />
     <Compile Include="Agents\Refine\RefineResult.cs" />
     <Compile Include="RibbonCustom.cs" />
+    <Compile Include="Shared\Controls\PaneHost.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Shared\Models\DraftModel.cs" />
     <Compile Include="Shared\Models\EmailModel.cs" />
     <Compile Include="Agents\Compose\ComposeAgent.cs" />
@@ -335,9 +338,6 @@
     <Compile Include="Shared\Settings\Registries\RegistryConfigurationSource.cs" />
     <Compile Include="Shared\Settings\Registries\RegistryConfigurationProvider.cs" />
     <Compile Include="Shared\Settings\SettingsService.cs" />
-    <Compile Include="SummaryHost.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="SummaryPane.xaml.cs">
       <DependentUpon>SummaryPane.xaml</DependentUpon>
     </Compile>

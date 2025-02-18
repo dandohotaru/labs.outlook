@@ -1,0 +1,46 @@
+﻿<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
+	<ribbon>
+		<tabs>
+
+			<!-- tab-->
+			<tab id="customTab" label="AI">
+
+				<!-- grpup -->
+				<group id="customActions" label="AI">
+
+					<!-- reply -->
+					<button
+						id="btnReply"
+						label="Reply"
+						description="Reply with AI"
+						imageMso="Reply"
+						size="large"
+						getVisible="OnReply_Visible"
+						onAction="OnReply_Click"/>
+
+					<!-- summarize -->
+					<button
+						id="btnSummarize"
+						label="Summarize"
+						description="Summarize with AI"
+						imageMso="ReadingMode"
+						size="large"
+						getVisible="OnSummarize_Visible"
+						onAction="OnSummarize_Click"/>
+
+					<!-- refine-->
+					<button
+						id="btnRefine"
+						label="Refine"
+						description="Refine with AI"
+						imageMso="Redo"
+						size="large"
+						getVisible="OnRefine_Visible"
+						onAction="OnRefine_Click"/>
+				</group>
+
+			</tab>
+
+		</tabs>
+	</ribbon>
+</customUI>

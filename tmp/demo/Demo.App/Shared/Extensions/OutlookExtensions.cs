@@ -1,5 +1,6 @@
 ﻿using Demo.App.Agents;
 using Microsoft.Office.Interop.Outlook;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -76,6 +77,33 @@ public static class OutlookExtensions
             };
             yield return result;
         }
+    }
+
+    public static string Draft(this MailItem email)
+    {
+        if (email == null || string.IsNullOrWhiteSpace(email.Body))
+            return string.Empty;
+
+        string[] separators =
+        {
+            "From:",
+            "Sent:",
+            "-----Original Message-----",
+            "On "
+        };
+
+        var body = email.Body;
+
+        foreach (var separator in separators)
+        {
+            int index = body.IndexOf(separator, StringComparison.OrdinalIgnoreCase);
+            if (index > 0)
+            {
+                return body.Substring(0, index).Trim();
+            }
+        }
+
+        return body.Trim();
     }
 
     private static IEnumerable<Row> AsEnumerable(this Table table)

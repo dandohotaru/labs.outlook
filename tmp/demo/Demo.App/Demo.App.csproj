@@ -285,34 +285,17 @@
   <ItemGroup>
     <Compile Include="Agents\Revise\ReviseAgent.cs" />
     <Compile Include="Agents\Revise\ReviseResult.cs" />
-    <Compile Include="ComposeRibbon.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ComposeRibbon.Designer.cs">
-      <DependentUpon>ComposeRibbon.cs</DependentUpon>
-    </Compile>
+    <Compile Include="RibbonCustom.cs" />
     <Compile Include="Shared\Models\DraftModel.cs" />
     <Compile Include="Shared\Models\EmailModel.cs" />
     <Compile Include="Agents\Compose\ComposeAgent.cs" />
     <Compile Include="Agents\Compose\ComposeResult.cs" />
     <Compile Include="Shared\Models\ThreadModel.cs" />
-    <Compile Include="CustomRibbon.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomRibbon.Designer.cs">
-      <DependentUpon>CustomRibbon.cs</DependentUpon>
-    </Compile>
     <Compile Include="Chats\IChatService.cs" />
     <Compile Include="Chats\OpenaiChatService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <EmbeddedResource Include="ComposeRibbon.resx">
-      <DependentUpon>ComposeRibbon.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CustomRibbon.resx">
-      <DependentUpon>CustomRibbon.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -358,7 +341,9 @@
     </Compile>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="RibbonCustom.xml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -1,4 +1,6 @@
-﻿using Demo.App.Shared.Controls;
+﻿using Demo.App.Chats;
+using Demo.App.Shared.Controls;
+using Demo.App.Shared.Settings;
 using Microsoft.Office.Core;
 using System.Diagnostics;
 
@@ -6,8 +8,13 @@ namespace Demo.App
 {
     public partial class ThisAddIn
     {
-        private RibbonCustom ribbon;
-        private PaneHost host;
+        public RibbonCustom Ribbon { get; set; }
+
+        public PaneHost Host { get; set; }
+
+        private ISettingsService Settings { get; set; }
+
+        private IChatService Chatbot { get; set; }
 
         private void InternalStartup()
         {
@@ -23,24 +30,28 @@ namespace Demo.App
 
         protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
-            ribbon = new RibbonCustom();
-            return ribbon;
+            Settings = SettingsService.Instance;
+            Chatbot = new OpenaiChatService(Settings);
+            Ribbon = new RibbonCustom(Settings, Chatbot);
+            return Ribbon;
         }
 
         public void ShowSummary(string summary)
         {
-            var control = new SummaryPane();
+            var control = new SummaryPane(Settings, Chatbot);
             control.UpdateSummary(summary);
 
-            if (host == null)
-                host = new PaneHost(CustomTaskPanes);
-            host.Show(control, 600);
+            if (Host != null)
+                Host.Close();
+
+            Host = new PaneHost(CustomTaskPanes);
+            Host.Show(control);
         }
 
         public void CloseSummary()
         {
-            host?.Close();
-            host = null;
+            Host?.Close();
+            Host = null;
         }
     }
 }

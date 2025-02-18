@@ -21,9 +21,17 @@ namespace Demo.App
     {
         private IRibbonUI ribbon;
 
-        public RibbonCustom()
+        public RibbonCustom(ISettingsService settings, IChatService chatbot)
         {
+            Settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            Chatbot = chatbot ?? throw new ArgumentNullException(nameof(chatbot));
+            Composer = new ComposeAgent(Chatbot);
+            Refiner = new RefineAgent(Chatbot);
         }
+
+        private ISettingsService Settings { get; set; }
+
+        private IChatService Chatbot { get; set; }
 
         private ComposeAgent Composer { get; set; }
 
@@ -37,11 +45,6 @@ namespace Demo.App
         public void Ribbon_Load(IRibbonUI ribbonUI)
         {
             ribbon = ribbonUI;
-
-            var settings = SettingsService.Instance;
-            var chatbot = new OpenaiChatService(settings);
-            Composer = new ComposeAgent(chatbot);
-            Refiner = new RefineAgent(chatbot);
         }
 
         private static string GetResourceText(string resourceName)

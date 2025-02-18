@@ -1,62 +1,86 @@
-﻿<UserControl 
+﻿<UserControl
     x:Class="Demo.App.SummaryPane"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Height="350" 
-    Width="500"
     Background="#202020">
 
+    <!-- grid -->
     <Grid Background="#202020">
+
+        <!-- rows -->
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- header -->
-        <Border Background="#303030" Padding="10" Grid.Row="0">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock 
-                    Text="🧠 AI Summary" 
-                    FontSize="16" 
-                    FontWeight="Bold" 
-                    Foreground="White"/>
-            </StackPanel>
+        <Border Background="#303030"
+                Padding="10"
+                Grid.Row="0">
+            <TextBlock
+                Text="🧠 AI Summary"
+                FontSize="16"
+                FontWeight="Bold"
+                Foreground="White"/>
         </Border>
 
         <!-- content -->
-        <StackPanel Margin="10,10,10,10" Grid.Row="1">
+        <Grid Grid.Row="1" Margin="10">
+            
+            <!-- rows -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
             <!-- title -->
-            <TextBlock 
-                Text="Generated Summary:" 
-                FontSize="14" 
-                FontWeight="Bold" 
-                Foreground="White" Margin="0,0,0,5"/>
+            <TextBlock
+                Text="Generated Summary:"
+                FontSize="14"
+                FontWeight="Bold"
+                Foreground="White"
+                Margin="0,0,0,5"
+                Grid.Row="0"/>
 
             <!-- summary -->
-            <Border BorderBrush="#505050" BorderThickness="1" CornerRadius="5">
-                <TextBox 
+            <Border BorderBrush="#505050"
+                    BorderThickness="1"
+                    CornerRadius="5"
+                    Background="#252525"
+                    Padding="2"
+                    Grid.Row="1">
+                <TextBox
                     x:Name="SummaryTextBox"
+                    FontSize="14"
                     TextWrapping="Wrap"
+                    AcceptsReturn="True"
                     VerticalScrollBarVisibility="Auto"
-                    MinHeight="150"
-                    MaxHeight="200"
                     Padding="5"
                     IsReadOnly="True"
-                    Background="#252525" 
-                    Foreground="White"/>
+                    Background="#252525"
+                    Foreground="White"
+                    BorderThickness="0"/>
             </Border>
+        </Grid>
 
-            <!-- buttons -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+        <!-- buttons -->
+        <Grid Grid.Row="2" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- stack -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
 
                 <!-- copy -->
-                <Button 
-                    Click="CopyButton_Click" 
-                    Padding="10" 
-                    Margin="5"
-                    Background="#505050" 
-                    Foreground="White">
+                <Button Click="CopyButton_Click"
+                        Padding="10"
+                        Margin="5"
+                        Background="#505050"
+                        Foreground="White">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="📋" FontSize="16" Margin="0,0,5,0"/>
                         <TextBlock Text="Copy" FontSize="14"/>
@@ -64,12 +88,11 @@
                 </Button>
 
                 <!-- close -->
-                <Button 
-                    Click="CloseButton_Click" 
-                    Padding="10" 
-                    Margin="5"
-                    Background="#D32F2F" 
-                    Foreground="White">
+                <Button Click="CloseButton_Click"
+                        Padding="10"
+                        Margin="5"
+                        Background="#D32F2F"
+                        Foreground="White">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="❌" FontSize="16" Margin="0,0,5,0"/>
                         <TextBlock Text="Close" FontSize="14"/>
@@ -77,8 +100,7 @@
                 </Button>
 
             </StackPanel>
-
-        </StackPanel>
+        </Grid>
 
     </Grid>
 </UserControl>

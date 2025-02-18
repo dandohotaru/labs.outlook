@@ -290,6 +290,8 @@
   <ItemGroup>
     <Compile Include="Agents\Refine\RefineAgent.cs" />
     <Compile Include="Agents\Refine\RefineResult.cs" />
+    <Compile Include="Agents\Summarize\SummarizeResult.cs" />
+    <Compile Include="Agents\Summarize\SummarizeAgent.cs" />
     <Compile Include="RibbonCustom.cs" />
     <Compile Include="Shared\Controls\PaneHost.cs">
       <SubType>UserControl</SubType>

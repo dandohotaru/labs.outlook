@@ -18,7 +18,7 @@ namespace Demo.App.Shared.Controls
 
         private CustomTaskPane Pane { get; set; }
 
-        public void Show<TControl>(TControl control, int width = 300, string title = "Custom Pane") where TControl : UIElement
+        public void Show<TControl>(TControl control, int width = 750, string title = "Custom Pane") where TControl : UIElement
         {
             if (control == null)
                 throw new ArgumentNullException(nameof(control));

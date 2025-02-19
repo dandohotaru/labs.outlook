@@ -2,7 +2,6 @@
 using Demo.App.Agents.Summarize;
 using Demo.App.Chats;
 using Demo.App.Shared.Extensions;
-using Demo.App.Shared.Settings;
 using Microsoft.Office.Interop.Outlook;
 using System;
 using System.Diagnostics;
@@ -13,15 +12,12 @@ namespace Demo.App
 {
     public partial class SummaryPane : UserControl
     {
-        private ISettingsService Settings { get; set; }
-
         private IChatService Chatbot { get; set; }
 
         private SummarizeAgent Summarizer { get; set; }
 
-        public SummaryPane(ISettingsService settings, IChatService chatbot)
+        public SummaryPane(IChatService chatbot)
         {
-            Settings = settings ?? throw new ArgumentNullException(nameof(settings));
             Chatbot = chatbot ?? throw new ArgumentNullException(nameof(chatbot));
             Summarizer = new SummarizeAgent(Chatbot);
             InitializeComponent();

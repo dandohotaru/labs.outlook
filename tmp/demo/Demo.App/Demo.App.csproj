@@ -290,6 +290,8 @@
   <ItemGroup>
     <Compile Include="Agents\Refine\RefineAgent.cs" />
     <Compile Include="Agents\Refine\RefineResult.cs" />
+    <Compile Include="Agents\Assist\AssistAgent.cs" />
+    <Compile Include="Agents\Assist\AssistResult.cs" />
     <Compile Include="Agents\Summarize\SummarizeResult.cs" />
     <Compile Include="Agents\Summarize\SummarizeAgent.cs" />
     <Compile Include="AssistantPane.xaml.cs">

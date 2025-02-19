@@ -29,7 +29,7 @@ public partial class UserControlHost : UserControl
         Pane.Visible = false;
     }
 
-    public void Show<T>(T control, int? width = 500) where T : UIElement
+    public void Show<T>(T control, int? width = 750) where T : UIElement
     {
         if (control == null)
             throw new ArgumentNullException(nameof(control));

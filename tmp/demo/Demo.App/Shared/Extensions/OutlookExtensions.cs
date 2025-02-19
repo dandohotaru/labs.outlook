@@ -79,31 +79,55 @@ public static class OutlookExtensions
         }
     }
 
-    public static string Draft(this MailItem email)
+    public static DraftModel Draft(this MailItem email)
     {
-        if (email == null || string.IsNullOrWhiteSpace(email.Body))
-            return string.Empty;
-
-        string[] separators =
+        if (email == null)
         {
-            "From:",
-            "Sent:",
-            "-----Original Message-----",
-            "On "
+            throw new ArgumentNullException(nameof(email));
+        }
+
+        string body = email.Body;
+
+        // Define patterns that usually start quoted or forwarded content
+        string[] replyPatterns =
+        {
+            "From:", // Common starting point for forwarded/replied emails
+            "Sent:", // Sent header in replies
+            "To:", // Often found in the body of a forwarded email
+            "Subject:", // Also found in forwarded/replied emails
+            "----- Forwarded message -----", // Common in forwarded emails
+            "On " // For replies, starting with "On [date], [sender] wrote:"
         };
 
-        var body = email.Body;
-
-        foreach (var separator in separators)
+        // Loop through reply patterns and strip out the quoted content
+        foreach (var pattern in replyPatterns)
         {
-            int index = body.IndexOf(separator, StringComparison.OrdinalIgnoreCase);
-            if (index > 0)
+            int index = body.IndexOf(pattern, StringComparison.OrdinalIgnoreCase);
+            if (index >= 0)
             {
-                return body.Substring(0, index).Trim();
+                // Extract the body before the quoted text
+                body = body.Substring(0, index).Trim();
+                break;
             }
         }
 
-        return body.Trim();
+        // If the body is not empty or whitespace, return the DraftModel
+        if (!string.IsNullOrWhiteSpace(body))
+        {
+            return new DraftModel
+            {
+                Subject = email.Subject,
+                Sender = email.SenderEmailAddress,
+                Recipients = email.Recipients
+                    .Cast<Recipient>()
+                    .Select(p => p.Address)
+                    .ToArray(),
+                Body = body
+            };
+        }
+
+        // If no composed message is found, return null or handle accordingly
+        return null;
     }
 
     private static IEnumerable<Row> AsEnumerable(this Table table)

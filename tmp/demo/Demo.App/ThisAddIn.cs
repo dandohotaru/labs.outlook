@@ -23,7 +23,7 @@ namespace Demo.App
             Startup += (sender, e) =>
             {
                 Debug.WriteLine("🚀 ThisAddIn has started");
-                Container = new UserControlHost(CustomTaskPanes, "AI Assistant");
+                
             };
             Shutdown += (sender, e) =>
             {
@@ -42,7 +42,7 @@ namespace Demo.App
 
         public void ShowSummary(string summary)
         {
-            var control = new SummaryPane(Settings, Chatbot);
+            var control = new SummaryPane(Chatbot);
             control.UpdateSummary(summary);
 
             if (Host != null)
@@ -60,9 +60,10 @@ namespace Demo.App
 
         public void ShowAssistant()
         {
-            if (Container == null)
-                return;
-            Container.Show(new AssistantPane());
+            if (Container != null)
+                Container.Close();
+            Container = new UserControlHost(CustomTaskPanes, "AI Assistant");
+            Container.Show(new AssistantPane(Chatbot));
         }
 
         public void CloseAssistant()
@@ -70,6 +71,7 @@ namespace Demo.App
             if (Container == null)
                 return;
             Container.Close();
+            Container = null;
         }
     }
 }

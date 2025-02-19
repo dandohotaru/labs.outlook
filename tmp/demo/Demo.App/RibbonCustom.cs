@@ -159,16 +159,7 @@ namespace Demo.App
                     : application.ActiveExplorer().ActiveInlineResponse as MailItem;
                 if (email != null)
                 {
-                    var draft = new DraftModel
-                    {
-                        Subject = email.Subject,
-                        Sender = email.SenderEmailAddress,
-                        Recipients = email.Recipients
-                            .Cast<Recipient>()
-                            .Select(p => p.Address)
-                            .ToArray(),
-                        Body = email.Draft()
-                    };
+                    var draft = email.Draft();
 
                     var conversation = email
                         .Conversation()

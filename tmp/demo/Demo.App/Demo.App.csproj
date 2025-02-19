@@ -292,9 +292,18 @@
     <Compile Include="Agents\Refine\RefineResult.cs" />
     <Compile Include="Agents\Summarize\SummarizeResult.cs" />
     <Compile Include="Agents\Summarize\SummarizeAgent.cs" />
+    <Compile Include="AssistantPane.xaml.cs">
+      <DependentUpon>AssistantPane.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RibbonCustom.cs" />
     <Compile Include="Shared\Controls\PaneHost.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Shared\Controls\UserControlHost.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Shared\Controls\UserControlHost.Designer.cs">
+      <DependentUpon>UserControlHost.cs</DependentUpon>
     </Compile>
     <Compile Include="Shared\Models\DraftModel.cs" />
     <Compile Include="Shared\Models\EmailModel.cs" />
@@ -358,6 +367,10 @@
     <EmbeddedResource Include="RibbonCustom.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="AssistantPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SummaryPane.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

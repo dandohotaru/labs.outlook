@@ -114,7 +114,6 @@ namespace Demo.App
                 var application = Globals.ThisAddIn.Application;
                 MailItem email = null;
 
-                // Get currently selected email
                 if (application.ActiveInspector() != null)
                 {
                     email = application.ActiveInspector().CurrentItem as MailItem;
@@ -124,16 +123,14 @@ namespace Demo.App
                     email = application.ActiveExplorer().Selection[1] as MailItem;
                 }
 
+                // ToDo: Review this interaction [DanD]
                 if (email != null)
                 {
-                    var conversation = email.Conversation().Map1();
+                    var conversation = email
+                        .Conversation()
+                        .Map1();
 
-                    // Call AI service for summarization
-                    //var result = await Summarizer.Summarize(conversation);
-                    var result = "this is a test";
-
-                    // Show the Task Pane and display the summary
-                    Globals.ThisAddIn.ShowSummary(result);
+                    Globals.ThisAddIn.ShowSummary("this is a test");
                 }
                 else
                 {
@@ -196,6 +193,11 @@ namespace Demo.App
         {
 
             return true;
+        }
+
+        public void OnAssist_Click(IRibbonControl control)
+        {
+            Globals.ThisAddIn.ShowAssistant();
         }
     }
 }

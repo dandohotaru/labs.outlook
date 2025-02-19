@@ -10,6 +10,8 @@ namespace Demo.App
     {
         public RibbonCustom Ribbon { get; set; }
 
+        public UserControlHost Container { get; set; }
+
         public PaneHost Host { get; set; }
 
         private ISettingsService Settings { get; set; }
@@ -21,10 +23,12 @@ namespace Demo.App
             Startup += (sender, e) =>
             {
                 Debug.WriteLine("🚀 ThisAddIn has started");
+                Container = new UserControlHost(CustomTaskPanes, "AI Assistant");
             };
             Shutdown += (sender, e) =>
             {
                 Debug.WriteLine("🔻 ThisAddIn is shutting down");
+                Container.Dispose();
             };
         }
 
@@ -52,6 +56,20 @@ namespace Demo.App
         {
             Host?.Close();
             Host = null;
+        }
+
+        public void ShowAssistant()
+        {
+            if (Container == null)
+                return;
+            Container.Show(new AssistantPane());
+        }
+
+        public void CloseAssistant()
+        {
+            if (Container == null)
+                return;
+            Container.Close();
         }
     }
 }

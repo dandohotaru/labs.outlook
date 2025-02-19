@@ -37,6 +37,15 @@
 						size="large"
 						getVisible="OnRefine_Visible"
 						onAction="OnRefine_Click"/>
+
+					<!-- assist-->
+					<button 
+						id="btnAssist"
+						label="Assist"
+						description="Assist with AI"
+						imageMso="Reply"
+						size="large"
+						onAction="OnAssist_Click"/>
 				</group>
 
 			</tab>

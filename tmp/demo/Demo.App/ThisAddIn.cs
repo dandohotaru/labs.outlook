@@ -62,7 +62,7 @@ namespace Demo.App
         {
             if (Container != null)
                 Container.Close();
-            Container = new UserControlHost(CustomTaskPanes, "AI Assistant");
+            Container = new UserControlHost(CustomTaskPanes);
             Container.Show(new AssistantPane(Chatbot));
         }
 

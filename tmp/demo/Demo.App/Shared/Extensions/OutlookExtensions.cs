@@ -42,11 +42,11 @@ public static class OutlookExtensions
         {
             var result = new EmailModel
             {
-                Sender = email.SenderName,
+                Sender = email.SenderName ?? email.Sender?.Name ?? email.SenderEmailAddress,
                 Subject = email.Subject,
                 Recipients = email.Recipients
                     .Cast<Recipient>()
-                    .Select(p => p.Address)
+                    .Select(p => p.Name ?? p.Address)
                     .ToList(),
                 Sent = email.SentOn,
                 Body = email.Body
@@ -66,11 +66,11 @@ public static class OutlookExtensions
         {
             var result = new EmailModel
             {
-                Sender = email.SenderName,
+                Sender = email.SenderName ?? email.Sender?.Name ?? email.SenderEmailAddress,
                 Subject = email.Subject,
                 Recipients = email.Recipients
                     .Cast<Recipient>()
-                    .Select(p => p.Address)
+                    .Select(p => p.Name ?? p.Address)
                     .ToList(),
                 Sent = email.SentOn,
                 Body = email.Body
@@ -79,7 +79,7 @@ public static class OutlookExtensions
         }
     }
 
-    public static DraftModel Draft(this MailItem email)
+    public static DraftModel Draft(this MailItem email, Recipient sender)
     {
         if (email == null)
         {
@@ -88,7 +88,7 @@ public static class OutlookExtensions
 
         string body = email.Body;
 
-        // Define patterns that usually start quoted or forwarded content
+        // patterns
         string[] replyPatterns =
         {
             "From:", // Common starting point for forwarded/replied emails
@@ -99,7 +99,7 @@ public static class OutlookExtensions
             "On " // For replies, starting with "On [date], [sender] wrote:"
         };
 
-        // Loop through reply patterns and strip out the quoted content
+        // extract
         foreach (var pattern in replyPatterns)
         {
             int index = body.IndexOf(pattern, StringComparison.OrdinalIgnoreCase);
@@ -111,23 +111,18 @@ public static class OutlookExtensions
             }
         }
 
-        // If the body is not empty or whitespace, return the DraftModel
-        if (!string.IsNullOrWhiteSpace(body))
-        {
-            return new DraftModel
+        return string.IsNullOrWhiteSpace(body)
+            ? null
+            : new DraftModel
             {
                 Subject = email.Subject,
-                Sender = email.SenderEmailAddress,
+                Sender = sender?.Name ?? email.SenderName ?? email.Sender?.Name ?? email.SenderEmailAddress,
                 Recipients = email.Recipients
                     .Cast<Recipient>()
-                    .Select(p => p.Address)
+                    .Select(p => p.Name ?? p.Address)
                     .ToArray(),
                 Body = body
             };
-        }
-
-        // If no composed message is found, return null or handle accordingly
-        return null;
     }
 
     private static IEnumerable<Row> AsEnumerable(this Table table)

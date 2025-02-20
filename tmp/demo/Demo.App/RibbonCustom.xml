@@ -28,7 +28,7 @@
 						getVisible="OnSummarize_Visible"
 						onAction="OnSummarize_Click"/>
 
-					<!-- refine-->
+					<!-- refine -->
 					<button
 						id="btnRefine"
 						label="Refine"
@@ -38,12 +38,12 @@
 						getVisible="OnRefine_Visible"
 						onAction="OnRefine_Click"/>
 
-					<!-- assist-->
+					<!-- assist -->
 					<button 
 						id="btnAssist"
 						label="Assist"
 						description="Assist with AI"
-						imageMso="Reply"
+						imageMso="Send"
 						size="large"
 						onAction="OnAssist_Click"/>
 				</group>

@@ -12,7 +12,7 @@ public partial class UserControlHost : UserControl
 
     private ElementHost Host { get; }
 
-    public UserControlHost(CustomTaskPaneCollection panes, string title = "AI Assistant")
+    public UserControlHost(CustomTaskPaneCollection panes, string title = "AI Tools")
     {
         InitializeComponent();
 

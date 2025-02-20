@@ -159,7 +159,7 @@ namespace Demo.App
                     : application.ActiveExplorer().ActiveInlineResponse as MailItem;
                 if (email != null)
                 {
-                    var draft = email.Draft();
+                    var draft = email.Draft(application.Session.CurrentUser);
 
                     var conversation = email
                         .Conversation()

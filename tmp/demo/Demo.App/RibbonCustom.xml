@@ -6,7 +6,7 @@
 			<tab id="customTab" label="AI">
 
 				<!-- grpup -->
-				<group id="customActions" label="AI">
+				<group id="customActions" label="AI Tools">
 
 					<!-- reply -->
 					<button

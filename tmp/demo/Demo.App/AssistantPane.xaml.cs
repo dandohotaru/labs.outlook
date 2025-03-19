@@ -8,6 +8,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,18 +17,26 @@ namespace Demo.App.Shared.Controls;
 
 public partial class AssistantPane : UserControl
 {
-    private IChatService Chatbot { get; set; }
+    private IChatService Chatbot { get; }
 
-    private AssistAgent Assistant { get; set; }
+    private AssistAgent Assistant { get; }
+
+    private string Intro { get; }
 
     public AssistantPane(IChatService chatbot)
     {
+        Intro = new StringBuilder()
+            .AppendLine("Hi!")
+            .AppendLine("I am your AI email assistant.")
+            .AppendLine("How can I assist you with today?")
+            .ToString();
+
         Chatbot = chatbot ?? throw new ArgumentNullException(nameof(chatbot));
         Assistant = new AssistAgent(Chatbot);
 
         InitializeComponent();
 
-        ResponseTextBlock.Text = @"Hello! I am your AI email assistant. How can I assist you with today?";
+        ResponseTextBlock.Text = Intro;
         PromptTextBox.Focus();
 
         Suggestions = new ObservableCollection<string>
@@ -98,7 +107,7 @@ public partial class AssistantPane : UserControl
         }
     }
 
-    private async void AcceptButton_Click(object sender, RoutedEventArgs e)
+    private void AcceptButton_Click(object sender, RoutedEventArgs e)
     {
         try
         {
@@ -113,15 +122,14 @@ public partial class AssistantPane : UserControl
             if (email != null)
             {
                 email.Body = ResponseTextBlock.Text;
+
+                ResponseTextBlock.Text = Intro;
+                PromptTextBox.Clear();
             }
             else
             {
-                Dispatcher.Invoke(() =>
-                {
-                    ResponseTextBlock.Text = "No editing email found";
-                });
+                MessageBox.Show("No editing email in scope");
             }
-
         }
         catch (System.Exception exception)
         {
@@ -130,10 +138,9 @@ public partial class AssistantPane : UserControl
         }
     }
 
-    private void RedoButton_Click(object sender, RoutedEventArgs e)
+    private void SettingsButton_Click(object sender, RoutedEventArgs e)
     {
-        ResponseTextBlock.Text = "(Response will appear here)";
-        PromptTextBox.Clear();
+        MessageBox.Show("ToDo: Feature is work in progress");
     }
 
     private void SuggestionsButton_Click(object sender, RoutedEventArgs e)

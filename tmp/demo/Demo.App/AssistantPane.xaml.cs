@@ -3,6 +3,7 @@ using Demo.App.Agents.Assist;
 using Demo.App.Agents.Summarize;
 using Demo.App.Chats;
 using Demo.App.Shared.Extensions;
+using Demo.App.Shared.Prompts;
 using Microsoft.Office.Interop.Outlook;
 using System;
 using System.Collections.ObjectModel;
@@ -19,11 +20,13 @@ public partial class AssistantPane : UserControl
 {
     private IChatService Chatbot { get; }
 
+    private IPromptLoader Loader { get; }
+
     private AssistAgent Assistant { get; }
 
     private string Intro { get; }
 
-    public AssistantPane(IChatService chatbot)
+    public AssistantPane(IChatService chatbot, IPromptLoader loader)
     {
         Intro = new StringBuilder()
             .AppendLine("Hi!")
@@ -32,7 +35,8 @@ public partial class AssistantPane : UserControl
             .ToString();
 
         Chatbot = chatbot ?? throw new ArgumentNullException(nameof(chatbot));
-        Assistant = new AssistAgent(Chatbot);
+        Loader = loader ?? throw new ArgumentNullException(nameof(loader));
+        Assistant = new AssistAgent(Chatbot, Loader);
 
         InitializeComponent();
 
@@ -41,14 +45,14 @@ public partial class AssistantPane : UserControl
 
         Suggestions = new ObservableCollection<string>
         {
-            "Refine the provided draft email, maintaining the original intent while improving clarity and tone as needed.",
-            "Reply a polite and professional response to the email, acknowledging the request clearly and concisely.",
-            "Compose a thank you message for the information provided in this email, maintaining a professional tone and clarity.",
-            "Invent clear witty plausible yet funny rather short excuses as reply for to the recipient of this email.",
-            "Confirm receipt of the email, and outline a clear timeline in the future for your response in a concise manner.",
-            "Compose a short humorous response to this email with a Star Wars themed conversation, maintaining a relaxed tone.",
-            "Generate a short reply to this email using formal Old English, using an appropriate vocabulary and style.",
-            "Provide a brief structured summary of this email conversation using simple markup highlighting important topics"
+            "Compose a new email based on draft",
+            "Summarize conversation in one sentence",
+            "Generate a timeline of key events",
+            "List action points from the conversation",
+            "Draft a polite professional reply",
+            "Refine current draft for clarity and tone",
+            "Analyze draft and provide feedback",
+            "Draft a witty humorous Yoda style reply",
         };
 
         DataContext = this;
@@ -138,9 +142,9 @@ public partial class AssistantPane : UserControl
         }
     }
 
-    private void SettingsButton_Click(object sender, RoutedEventArgs e)
+    private void CopyButton_Click(object sender, RoutedEventArgs e)
     {
-        MessageBox.Show("ToDo: Feature is work in progress");
+        Clipboard.SetText(ResponseTextBlock.Text);
     }
 
     private void SuggestionsButton_Click(object sender, RoutedEventArgs e)

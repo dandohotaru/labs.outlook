@@ -1,4 +1,5 @@
 ﻿using Demo.App.Chats;
+using Demo.App.Shared.Prompts;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,9 +10,12 @@ public class AssistAgent
 {
     private IChatService Service { get; }
 
-    public AssistAgent(IChatService service)
+    private IPromptLoader Loader { get; set; }
+
+    public AssistAgent(IChatService service, IPromptLoader loader)
     {
         Service = service ?? throw new ArgumentNullException(nameof(service));
+        Loader = loader ?? throw new ArgumentNullException(nameof(loader));
     }
 
     public async Task<AssistResult> Assist(string prompt, DraftModel? draft, IEnumerable<EmailModel> conversation)
@@ -19,22 +23,12 @@ public class AssistAgent
         var messages = new List<ChatMessage>();
 
         // system
+        var instructions = Loader.LoadPrompt(@"Agents\Assist\agent.md");
+
         messages.Add(new ChatMessage
         {
             Role = "system",
-            Content = @"
-                You are an intelligent email assistant that assists with drafting, refining emails, and summarizing email conversations based on user instructions.
-                You should:
-                - Maintain professionalism, clarity, and conciseness.
-                - If summarization is needed, generate a concise summary of the conversation without adding new information.
-                - If no summarization is needed, use the background conversation to understand context, but do not include it in the final email.
-                - If an existing draft is provided, refine it while keeping its intent.
-                - If no draft is given, generate a new email from scratch following the prompt.
-                - Follow the user instruction carefully and ensure the response aligns with the conversation.
-                - Make sure to rely on intended recipient information when addressing the email, if available.
-                - Ensure you sign the message with the sender's information like name or contact details when available.
-                - The output should consist solely of the email body text in a simple, clear format, with no extra characters or explanation.
-                - **Include only the text for the email body in the output without the subject.**"
+            Content = instructions
         });
 
         // context

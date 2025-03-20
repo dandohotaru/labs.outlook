@@ -326,6 +326,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Agents\Assist\agent.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="app.config" />
     <None Include="app.secrets.ps1" />
     <None Include="app.settings.json">
@@ -344,6 +347,8 @@
     </Compile>
     <Compile Include="Shared\Extensions\ExceptionExtensions.cs" />
     <Compile Include="Shared\Extensions\OutlookExtensions.cs" />
+    <Compile Include="Shared\Prompts\PromptLoader.cs" />
+    <Compile Include="Shared\Prompts\IPromptLoader.cs" />
     <Compile Include="Shared\Secrets\ISecretService.cs" />
     <Compile Include="Shared\Secrets\RegistryService.cs" />
     <Compile Include="Shared\Settings\ISettingsService.cs" />
@@ -378,6 +383,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

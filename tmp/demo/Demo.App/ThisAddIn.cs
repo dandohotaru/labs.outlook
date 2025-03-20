@@ -1,5 +1,6 @@
 ﻿using Demo.App.Chats;
 using Demo.App.Shared.Controls;
+using Demo.App.Shared.Prompts;
 using Demo.App.Shared.Settings;
 using Microsoft.Office.Core;
 using System.Diagnostics;
@@ -18,6 +19,8 @@ namespace Demo.App
 
         private IChatService Chatbot { get; set; }
 
+        private IPromptLoader Loader { get; set; }
+
         private void InternalStartup()
         {
             Startup += (sender, e) =>
@@ -35,6 +38,7 @@ namespace Demo.App
         protected override IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
             Settings = SettingsService.Instance;
+            Loader = new PromptLoader();
             Chatbot = new OpenaiChatService(Settings);
             Ribbon = new RibbonCustom(Settings, Chatbot);
             return Ribbon;
@@ -63,7 +67,7 @@ namespace Demo.App
             if (Container != null)
                 Container.Close();
             Container = new UserControlHost(CustomTaskPanes);
-            Container.Show(new AssistantPane(Chatbot));
+            Container.Show(new AssistantPane(Chatbot, Loader));
         }
 
         public void CloseAssistant()

@@ -3,7 +3,7 @@
     "Key": "provided via registry settings",
     "Model": "gpt-4o-mini",
     "Temperature": 0.7,
-    "Max": 300,
+    "Max": 500,
     "Endpoints": {
       "Completion": "https://api.openai.com/v1/chat/completions"
     }
